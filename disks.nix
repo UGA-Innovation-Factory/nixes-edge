@@ -10,7 +10,7 @@
 
   fileSystems."/" =
     { device = "/dev/disk/by-label/nixos";
-      fsType = "ext4";
+      fsType = "btrfs";
     };
 
   fileSystems."/boot" =
@@ -18,8 +18,12 @@
       fsType = "vfat";
     };
 
+  fileSystems."/home" = 
+    { device = "/dev/disk/by-label/home";
+      fsType = "btrfs";
+    };
+
   swapDevices =
     [ { device = "/dev/disk/by-label/swap"; }
     ];
-
 }
