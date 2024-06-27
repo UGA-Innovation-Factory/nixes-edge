@@ -11,15 +11,7 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  # Set up GRUB 2 with GA-AIM logo as splash image
-  boot.loader.grub = {
-    enable = true;
-    device = "nodev"; # for EFI systems, set to your specific device, or use "nodev" for UEFI-only systems
-    efiSupport = true;
-    gfxmodeEfi = "auto";
-    gfxpayloadEfi = "keep";
-    configurationLimit = 5;
-  };
+  boot.loader.systemd-boot.enable = true;
   
   # Boot silently
   boot.kernelParams = [ "quiet" "rd.systemd.show_status=false"]; # Ensure a quiet boot
@@ -37,13 +29,13 @@
   systemd.services."autovt@tty1".enable = false;
 
   # Enable SSH for remote access
-  services.openssh.enable = true;
-  services.openssh.settings.PasswordAuthentication = true;
-
+  services.openssh.enable = true; services.openssh.settings.PasswordAuthentication = true;
   # Sound
   sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire.enable = true;
-}
 
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+}
